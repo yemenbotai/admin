@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مؤسسة طلال السليماني | لوحة تحكم كاملة</title>
+    <meta name="description" content="مؤسسة طلال السليماني - دهانات، ديكورات، ترميم، حداده، مضلات، سواتر، مقاولات عامه في الرياض">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <style>
+        :root {
+            --primary-color: #1e3a5f;
+            --secondary-color: #0d2137;
+            --accent-color: #f39c12;
+            --light-color: #f8f9fa;
+            --shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+            --admin-sidebar: #0a1622;
+            --ticker-bg: #0d2137;
+            --ticker-text-color: #ffffff;
+            --ticker-font-size: 16px;
+            --ticker-speed: 25s;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        
+        body { background: var(--light-color); color: #2c2b28; line-height: 1.6; }
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; padding: 0 15px; }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            font-weight: 700;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 30px;
+            transition: 0.3s;
+        }
+        
+        nav ul li a:hover {
+            background: var(--accent-color);
+            color: var(--primary-color);
+        }
+        
+        .contact-info {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .contact-info a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* Hero */
+        .hero {
+            background: linear-gradient(rgba(30, 58, 95, 0.88), rgba(13, 33, 55, 0.9)), url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=1000') center/cover;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+        
+        .hero h2 { font-size: 2.8rem; color: var(--accent-color); margin-bottom: 20px; }
+        .hero p { font-size: 1.3rem; max-width: 800px; margin: 0 auto 25px; }
+        
+        .btn {
+            display: inline-block;
+            background: var(--accent-color);
+            color: var(--primary-color);
+            padding: 12px 28px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .btn:hover { transform: translateY(-3px); background: #e67e22; }
+        
+        /* News Ticker - متغير بالكامل */
+        .news-ticker {
+            background: var(--ticker-bg);
+            color: var(--ticker-text-color);
+            padding: 10px 0;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .ticker-wrapper {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        
+        .ticker-content {
+            display: inline-block;
+            animation: ticker var(--ticker-speed) linear infinite;
+            white-space: nowrap;
+            font-size: var(--ticker-font-size);
+        }
+        
+        .ticker-content span {
+            padding: 0 35px;
+            color: var(--ticker-text-color);
+        }
+        
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        /* Sections */
+        .section-title { text-align: center; margin-bottom: 45px; }
+        .section-title h2 { font-size: 2.3rem; color: var(--primary-color); display: inline-block; border-bottom: 4px solid var(--accent-color); padding-bottom: 8px; }
+        
+        .services { padding: 70px 0; background: white; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+        
+        .service-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: 0.25s;
+            border-bottom: 3px solid var(--primary-color);
+        }
+        
+        .service-card:hover { transform: translateY(-8px); }
+        
+        .service-img {
+            height: 190px;
+            background: #f3ede5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .service-img img { width: 100%; height: 100%; object-fit: cover; }
+        .service-content { padding: 20px; }
+        
+        .gallery { padding: 70px 0; background: var(--light-color); }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 18px; }
+        .gallery-item { background: #fff; border-radius: 12px; overflow: hidden; height: 200px; box-shadow: var(--shadow); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .videos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        .video-item { background: white; border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); }
+        .video-item iframe { width: 100%; height: 250px; border: none; }
+        
+        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .testimonial-card { background: white; padding: 25px; border-radius: 20px; box-shadow: var(--shadow); border-right: 5px solid var(--accent-color); }
+        
+        /* Floating buttons */
+        .whatsapp-right, .whatsapp-left, .call-btn, .back-to-top {
+            position: fixed;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            transition: 0.2s;
+            text-decoration: none;
+        }
+        .whatsapp-right { background: #25D366; color: white; right: 20px; bottom: 20px; }
+        .whatsapp-left { background: #25D366; color: white; left: 20px; bottom: 20px; }
+        .call-btn { background: var(--accent-color); color: var(--primary-color); right: 20px; bottom: 90px; }
+        .back-to-top { background: var(--secondary-color); color: white; right: 20px; bottom: 160px; cursor: pointer; display: none; }
+        
+        /* Admin Login Button - صغير */
+        .admin-login-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 14px;
+            cursor: pointer;
+            z-index: 999;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+            border: none;
+        }
+        
+        .admin-login-btn:hover { background: var(--accent-color); color: var(--primary-color); }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            position: relative;
+        }
+        .modal-content input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 10px; }
+        .close-modal { position: absolute; top: 15px; left: 20px; font-size: 28px; cursor: pointer; color: #999; }
+        
+        /* Admin Sidebar */
+        .admin-sidebar {
+            position: fixed;
+            right: -380px;
+            top: 0;
+            width: 380px;
+            height: 100%;
+            background: var(--admin-sidebar);
+            color: white;
+            z-index: 10001;
+            transition: 0.3s;
+            overflow-y: auto;
+            box-shadow: -5px 0 20px rgba(0,0,0,0.3);
+        }
+        .admin-sidebar.open { right: 0; }
+        .admin-sidebar-header { padding: 20px; background: var(--accent-color); color: var(--primary-color); display: flex; justify-content: space-between; align-items: center; }
+        .close-sidebar { cursor: pointer; font-size: 24px; }
+        .admin-menu { padding: 20px; }
+        .admin-menu-item { padding: 12px 15px; margin: 5px 0; cursor: pointer; border-radius: 10px; display: flex; align-items: center; gap: 12px; }
+        .admin-menu-item:hover { background: rgba(243,156,18,0.2); }
+        .admin-panel { display: none; background: white; color: #333; border-radius: 15px; padding: 20px; margin: 20px; }
+        .admin-panel.active-panel { display: block; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; }
+        .item-card { background: #f5f5f5; padding: 12px; margin: 10px 0; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .item-card button { background: #e74c3c; color: white; border: none; padding: 5px 12px; border-radius: 5px; cursor: pointer; }
+        
+        @media (max-width: 768px) {
+            .admin-sidebar { width: 300px; }
+            .admin-login-btn { bottom: 10px; font-size: 12px; padding: 6px 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+    <div class="container">
+        <div class="header-content">
+            <div class="logo"><h1>مؤسسة طلال السليماني</h1></div>
+            <nav><ul>
+                <li><a href="#home">الرئيسية</a></li>
+                <li><a href="#services">خدماتنا</a></li>
+                <li><a href="#gallery">معرض الأعمال</a></li>
+                <li><a href="#videos">فيديوهات</a></li>
+                <li><a href="#testimonials">آراء العملاء</a></li>
+                <li><a href="#contact">اتصل بنا</a></li>
+            </ul></nav>
+            <div class="contact-info">
+                <a href="tel:+966553200709"><i class="fas fa-phone-alt"></i> 0553200709</a>
+                <a href="tel:+966592557803"><i class="fas fa-phone-alt"></i> 0592557803</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="date-time" style="background: var(--primary-color); color: white; text-align: center; padding: 6px;"><div id="current-date-time"></div></div>
+
+<!-- News Ticker -->
+<div class="news-ticker" id="newsTicker">
+    <div class="ticker-wrapper">
+        <div class="ticker-content" id="tickerContent"></div>
+    </div>
+</div>
+
+<!-- Hero -->
+<section class="hero" id="home">
+    <div class="container">
+        <h2 id="heroTitle">مؤسسة طلال السليماني للمقاولات والديكورات</h2>
+        <p id="heroDesc">خدمات متكاملة: دهانات، ديكورات، ترميم، حداده، مضلات، سواتر، مقاولات عامه – بجودة عالية</p>
+        <a href="#contact" class="btn">اطلب خدمتك الآن</a>
+    </div>
+</section>
+
+<section class="services" id="services"><div class="container"><div class="section-title"><h2>خدماتنا</h2></div><div class="services-grid" id="servicesGrid"></div></div></section>
+<section class="gallery" id="gallery"><div class="container"><div class="section-title"><h2>معرض أعمالنا</h2></div><div class="gallery-grid" id="galleryGrid"></div></div></section>
+<section class="videos" id="videos"><div class="container"><div class="section-title"><h2>فيديوهات من أعمالنا</h2></div><div class="videos-grid" id="videosGrid"></div></div></section>
+<section class="testimonials" id="testimonials"><div class="container"><div class="section-title"><h2>آراء عملائنا</h2></div><div class="testimonials-grid" id="testimonialsGrid"></div></div></section>
+
+<footer id="contact"><div class="container"><div class="copyright">© <span id="current-year"></span> مؤسسة طلال السليماني</div></div></footer>
+
+<!-- Floating Buttons -->
+<a href="https://wa.me/966553200709" class="whatsapp-right" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<a href="https://wa.me/966592557803" class="whatsapp-left" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<a href="tel:+966553200709" class="call-btn"><i class="fas fa-phone"></i></a>
+<div class="back-to-top"><i class="fas fa-arrow-up"></i></div>
+
+<!-- زر تسجيل الدخول الصغير -->
+<button class="admin-login-btn" id="adminLoginBtn"><i class="fas fa-user-shield"></i> دخول المدير</button>
+
+<!-- Login Modal -->
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeLoginModal()">&times;</span>
+        <h2>تسجيل دخول المشرف</h2>
+        <input type="text" id="loginUsername" placeholder="اسم المستخدم">
+        <input type="password" id="loginPassword" placeholder="كلمة المرور">
+        <button class="btn" onclick="login()">دخول</button>
+        <button class="btn" style="background:#95a5a6;" onclick="showResetModal()">نسيت كلمة المرور؟</button>
+    </div>
+</div>
+
+<!-- Reset Modal -->
+<div id="resetModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeResetModal()">&times;</span>
+        <h2>استعادة كلمة المرور</h2>
+        <p><strong>سؤال الأمان: ما هو اسم حيك المفضل؟</strong></p>
+        <input type="text" id="securityAnswer" placeholder="الإجابة">
+        <button class="btn" onclick="verifySecurity()">تحقق</button>
+    </div>
+</div>
+
+<!-- Change Password Modal -->
+<div id="changePwdModal" class="modal">
+    <div class="modal-content">
+        <h2>تغيير كلمة المرور</h2>
+        <input type="password" id="newPassword" placeholder="كلمة المرور الجديدة">
+        <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور">
+        <button class="btn" onclick="changePassword()">تغيير</button>
+        <button class="btn" style="background:#95a5a6;" onclick="closeChangePwdModal()">إلغاء</button>
+    </div>
+</div>
+
+<!-- Admin Sidebar -->
+<div id="adminSidebar" class="admin-sidebar">
+    <div class="admin-sidebar-header"><h3><i class="fas fa-tachometer-alt"></i> لوحة التحكم</h3><span class="close-sidebar" onclick="toggleAdminSidebar()"><i class="fas fa-times"></i></span></div>
+    <div class="admin-menu">
+        <div class="admin-menu-item" onclick="showAdminPanel('dashboard')"><i class="fas fa-chart-line"></i> الإحصائيات</div>
+        <div class="admin-menu-item" onclick="showAdminPanel('services')"><i class="fas fa-concierge-bell"></i> إدارة الخدمات</div>
+        <div class="admin-menu-item" onclick="showAdminPanel('gallery')"><i class="fas fa-images"></i> إدارة المعرض (رفع صور)</div>
+        <div class="admin-menu-item" onclick="showAdminPanel('testimonials')"><i class="fas fa-comments"></i> آراء العملاء</div>
+        <div class="admin-menu-item" onclick="showAdminPanel('hero')"><i class="fas fa-heading"></i> تعديل النصوص</div>
+        <div class="admin-menu-item" onclick="showAdminPanel('ticker')"><i class="fas fa-scroll"></i> إعدادات الشريط الإخباري</div>
+        <div class="admin-menu-item" onclick="showAdminPanel('colors')"><i class="fas fa-palette"></i> تخصيص الألوان والخطوط</div>
+        <div class="admin-menu-item" onclick="showChangePassword()"><i class="fas fa-key"></i> تغيير كلمة المرور</div>
+        <div class="admin-menu-item" onclick="logout()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</div>
+    </div>
+    <div id="adminPanelsContainer"></div>
+</div>
+
+<script>
+    // ========== SYSTEM DATA ==========
+    let isLoggedIn = false;
+    let adminPassword = "admin1990";
+    let securityAnswer = "الرياض";
+    
+    // Site Data
+    let siteData = {
+        heroTitle: "مؤسسة طلال السليماني للمقاولات والديكورات",
+        heroDesc: "خدمات متكاملة: دهانات، ديكورات، ترميم، حداده، مضلات، سواتر، مقاولات عامه – بجودة عالية",
+        tickerItems: ["✨ دهانات داخلية وخارجية بجودة عالية", "📐 ديكورات جبس بورد", "🧱 ترميم شامل للمباني", "🔧 حدادة وأعمال حديدية"],
+        tickerSettings: { bgColor: "#0d2137", textColor: "#ffffff", fontSize: "16px", speed: "25s" },
+        services: [
+            { name: "الدهانات", imgData: "", imgUrl: "https://placehold.co/400x200?text=دهانات", desc: "دهانات داخلية وخارجية" },
+            { name: "الديكورات", imgData: "", imgUrl: "https://placehold.co/400x200?text=ديكورات", desc: "ديكورات حديثة" },
+            { name: "الترميم", imgData: "", imgUrl: "https://placehold.co/400x200?text=ترميم", desc: "ترميم شامل" }
+        ],
+        gallery: [],
+        testimonials: [
+            { name: "أحمد السعدي", text: "خدمة ممتازة وجودة عالية", area: "الرياض" },
+            { name: "سارة محمد", text: "ديكورات رائعة وأنصح بالتعامل", area: "الرياض" }
+        ],
+        videos: [
+            { url: "https://www.youtube.com/embed/3Dq4yN8c7xM", title: "أعمال الدهانات" },
+            { url: "https://www.youtube.com/embed/4E5rT9qLwA0", title: "أعمال الحدادة" }
+        ]
+    };
+    
+    // Load/Save
+    function saveData() { localStorage.setItem('siteData', JSON.stringify(siteData)); applyTickerStyles(); renderPublicSite(); }
+    function loadData() { let saved = localStorage.getItem('siteData'); if(saved) siteData = JSON.parse(saved); applyTickerStyles(); renderPublicSite(); }
+    
+    function applyTickerStyles() {
+        let ticker = document.getElementById('newsTicker');
+        if(ticker) {
+            ticker.style.background = siteData.tickerSettings.bgColor;
+            ticker.style.color = siteData.tickerSettings.textColor;
+            document.documentElement.style.setProperty('--ticker-bg', siteData.tickerSettings.bgColor);
+            document.documentElement.style.setProperty('--ticker-text-color', siteData.tickerSettings.textColor);
+            document.documentElement.style.setProperty('--ticker-font-size', siteData.tickerSettings.fontSize);
+            document.documentElement.style.setProperty('--ticker-speed', siteData.tickerSettings.speed);
+        }
+    }
+    
+    function renderPublicSite() {
+        document.getElementById('heroTitle').innerText = siteData.heroTitle;
+        document.getElementById('heroDesc').innerText = siteData.heroDesc;
+        
+        let tickerDiv = document.getElementById('tickerContent');
+        let doubleItems = [...siteData.tickerItems, ...siteData.tickerItems];
+        tickerDiv.innerHTML = doubleItems.map(t => `<span>${t}</span>`).join('');
+        
+        let servicesGrid = document.getElementById('servicesGrid');
+        servicesGrid.innerHTML = siteData.services.map(s => `
+            <div class="service-card">
+                <div class="service-img"><img src="${s.imgData || s.imgUrl}" onerror="this.src='https://placehold.co/400x200?text=خدمة'"></div>
+                <div class="service-content"><h3>${s.name}</h3><p>${s.desc}</p></div>
+            </div>
+        `).join('');
+        
+        let galleryGrid = document.getElementById('galleryGrid');
+        galleryGrid.innerHTML = siteData.gallery.map(img => `<div class="gallery-item"><img src="${img}" onerror="this.src='https://placehold.co/300x200?text=صورة'"></div>`).join('');
+        
+        let videosGrid = document.getElementById('videosGrid');
+        videosGrid.innerHTML = siteData.videos.map(v => `<div class="video-item"><iframe src="${v.url}" allowfullscreen></iframe><div class="video-caption">${v.title}</div></div>`).join('');
+        
+        let testimonialsGrid = document.getElementById('testimonialsGrid');
+        testimonialsGrid.innerHTML = siteData.testimonials.map(t => `<div class="testimonial-card"><p>"${t.text}"</p><strong>${t.name}</strong><br><small>${t.area}</small></div>`).join('');
+    }
+    
+    // Convert image file to base64
+    function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    }
+    
+    // Admin Panels
+    function showAdminPanel(panel) {
+        let container = document.getElementById('adminPanelsContainer');
+        if(panel === 'dashboard') {
+            container.innerHTML = `<div class="admin-panel active-panel"><h3>📊 الإحصائيات</h3><canvas id="statsChart"></canvas><p>الخدمات: ${siteData.services.length}</p><p>الصور: ${siteData.gallery.length}</p><p>الآراء: ${siteData.testimonials.length}</p><button class="btn" onclick="saveData()" style="margin-top:15px;">💾 حفظ جميع التغييرات</button></div>`;
+            setTimeout(() => { let ctx = document.getElementById('statsChart')?.getContext('2d'); if(ctx) new Chart(ctx, { type: 'bar', data: { labels: ['خدمات', 'صور', 'آراء'], datasets: [{ label: 'العدد', data: [siteData.services.length, siteData.gallery.length, siteData.testimonials.length], backgroundColor: '#f39c12' }] } }); }, 100);
+        }
+        else if(panel === 'services') {
+            container.innerHTML = `<div class="admin-panel active-panel"><h3>إدارة الخدمات</h3><div id="servicesList"></div><button class="btn" onclick="addService()">+ إضافة خدمة</button><button class="btn" onclick="saveData()" style="background:#27ae60;">💾 حفظ</button></div>`;
+            renderServicesList();
+        }
+        else if(panel === 'gallery') {
+            container.innerHTML = `<div class="admin-panel active-panel"><h3>إدارة المعرض (رفع صور)</h3><div id="galleryList"></div><input type="file" id="galleryUpload" accept="image/*" multiple><button class="btn" onclick="uploadGalleryImages()">رفع الصور</button><button class="btn" onclick="saveData()" style="background:#27ae60;">💾 حفظ</button></div>`;
+            renderGalleryList();
+        }
+        else if(panel === 'testimonials') {
+            container.innerHTML = `<div class="admin-panel active-panel"><h3>آراء العملاء</h3><div id="testimonialsList"></div><button class="btn" onclick="addTestimonial()">+ إضافة رأي</button><button class="btn" onclick="saveData()">💾 حفظ</button></div>`;
+            renderTestimonialsList();
+        }
+        else if(panel === 'hero') {
+            container.innerHTML = `<div class="admin-panel active-panel"><h3>تعديل النصوص</h3><div class="form-group"><label>العنوان</label><input type="text" id="editHeroTitle" value="${siteData.heroTitle}"></div><div class="form-group"><label>الوصف</label><textarea id="editHeroDesc">${siteData.heroDesc}</textarea></div><button class="btn" onclick="updateHeroText()">حفظ النصوص</button></div>`;
+        }
+        else if(panel === 'ticker') {
+            container.innerHTML = `<div class="admin-panel active-panel"><h3>إعدادات الشريط الإخباري</h3><div id="tickerItemsList"></div><div class="form-group"><label>لون الخلفية</label><input type="color" id="tickerBg" value="${siteData.tickerSettings.bgColor}"></div><div class="form-group"><label>لون النص</label><input type="color" id="tickerTextColor" value="${siteData.tickerSettings.textColor}"></div><div class="form-group"><label>حجم الخط (px)</label><input type="number" id="tickerFontSize" value="${parseInt(siteData.tickerSettings.fontSize)}"></div><div class="form-group"><label>سرعة الحركة (ثواني)</label><input type="range" id="tickerSpeed" min="10" max="60" value="${parseInt(siteData.tickerSettings.speed)}"><span id="speedValue">${siteData.tickerSettings.speed}</span></div><button class="btn" onclick="saveTickerSettings()">تطبيق الإعدادات</button><button class="btn" onclick="addTickerItem()">+ إضافة نص</button><button class="btn" onclick="saveData()">💾 حفظ الكل</button></div>`;
+            renderTickerList();
+            let speedSlider = document.getElementById('tickerSpeed');
+            if(speedSlider) speedSlider.oninput = function() { document.getElementById('speedValue').innerText = this.value + 's'; };
+        }
+        else if(panel === 'colors') {
+            container.innerHTML = `<div class="admin-panel active-panel"><h3>تخصيص الألوان والخطوط</h3><div class="form-group"><label>اللون الرئيسي</label><input type="color" id="primaryColor" value="#1e3a5f"></div><div class="form-group"><label>لون الإطار العلوي للشريط</label><input type="color" id="tickerBgColor" value="${siteData.tickerSettings.bgColor}"></div><button class="btn" onclick="applyColorSettings()">تطبيق</button><button class="btn" onclick="saveData()">💾 حفظ</button></div>`;
+        }
+        document.querySelectorAll('.admin-menu-item').forEach(el => el.classList.remove('active'));
+        if(event.target) event.target.closest('.admin-menu-item').classList.add('active');
+    }
+    
+    function renderServicesList() {
+        let div = document.getElementById('servicesList');
+        if(!div) return;
+        div.innerHTML = siteData.services.map((s, i) => `<div class="item-card"><div><strong>${s.name}</strong><br>${s.desc}</div><div><input type="file" accept="image/*" onchange="uploadServiceImage(${i}, this)"><button onclick="deleteService(${i})">حذف</button></div></div>`).join('');
+    }
+    async function uploadServiceImage(index, input) {
+        if(input.files[0]) { siteData.services[index].imgData = await fileToBase64(input.files[0]); saveData(); renderServicesList(); alert("تم رفع الصورة"); }
+    }
+    function deleteService(i) { siteData.services.splice(i,1); saveData(); renderServicesList(); renderPublicSite(); }
+    function addService() { let name=prompt("اسم الخدمة"), desc=prompt("الوصف"); if(name) { siteData.services.push({name, desc, imgData:"", imgUrl:"https://placehold.co/400x200?text="+name}); saveData(); renderPublicSite(); showAdminPanel('services'); } }
+    
+    function renderGalleryList() {
+        let div = document.getElementById('galleryList');
+        if(div) div.innerHTML = siteData.gallery.map((img, i) => `<div class="item-card"><img src="${img}" style="width:50px;height:50px;object-fit:cover;"><span>صورة ${i+1}</span><button onclick="deleteGallery(${i})">حذف</button></div>`).join('');
+    }
+    async function uploadGalleryImages() {
+        let files = document.getElementById('galleryUpload').files;
+        for(let file of files) { let base64 = await fileToBase64(file); siteData.gallery.push(base64); }
+        saveData(); renderPublicSite(); renderGalleryList(); alert("تم رفع الصور");
+    }
+    function deleteGallery(i) { siteData.gallery.splice(i,1); saveData(); renderPublicSite(); renderGalleryList(); }
+    
+    function renderTestimonialsList() {
+        let div = document.getElementById('testimonialsList');
+        if(div) div.innerHTML = siteData.testimonials.map((t,i) => `<div class="item-card"><div><strong>${t.name}</strong><br>${t.text}</div><button onclick="deleteTestimonial(${i})">حذف</button></div>`).join('');
+    }
+    function deleteTestimonial(i) { siteData.testimonials.splice(i,1); saveData(); renderPublicSite(); renderTestimonialsList(); }
+    function addTestimonial() { let name=prompt("الاسم"), text=prompt("الرأي"); if(name) { siteData.testimonials.push({name, text, area:"الرياض"}); saveData(); renderPublicSite(); renderTestimonialsList(); } }
+    
+    function renderTickerList() {
+        let div = document.getElementById('tickerItemsList');
+        if(div) div.innerHTML = siteData.tickerItems.map((t,i) => `<div class="item-card"><span>${t}</span><button onclick="deleteTickerItem(${i})">حذف</button></div>`).join('');
+    }
+    function deleteTickerItem(i) { siteData.tickerItems.splice(i,1); saveData(); renderPublicSite(); renderTickerList(); }
+    function addTickerItem() { let text=prompt("نص الخبر"); if(text) { siteData.tickerItems.push(text); saveData(); renderPublicSite(); renderTickerList(); } }
+    
+    function saveTickerSettings() {
+        siteData.tickerSettings.bgColor = document.getElementById('tickerBg').value;
+        siteData.tickerSettings.textColor = document.getElementById('tickerTextColor').value;
+        siteData.tickerSettings.fontSize = document.getElementById('tickerFontSize').value + 'px';
+        siteData.tickerSettings.speed = document.getElementById('tickerSpeed').value + 's';
+        saveData();
+        alert("تم حفظ إعدادات الشريط");
+    }
+    
+    function updateHeroText() {
+        siteData.heroTitle = document.getElementById('editHeroTitle').value;
+        siteData.heroDesc = document.getElementById('editHeroDesc').value;
+        saveData();
+        alert("تم تحديث النصوص");
+    }
+    
+    function applyColorSettings() {
+        let primary = document.getElementById('primaryColor').value;
+        document.documentElement.style.setProperty('--primary-color', primary);
+        siteData.tickerSettings.bgColor = document.getElementById('tickerBgColor').value;
+        applyTickerStyles();
+        saveData();
+    }
+    
+    // Auth Functions
+    function login() {
+        let user = document.getElementById('loginUsername').value;
+        let pass = document.getElementById('loginPassword').value;
+        if(user === 'admin' && pass === adminPassword) {
+            isLoggedIn = true;
+            localStorage.setItem('adminLoggedIn', 'true');
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('adminLoginBtn').style.display = 'none';
+            document.getElementById('adminSidebar').classList.add('open');
+            alert("مرحباً أيها المدير!");
+        } else alert("بيانات الدخول غير صحيحة");
+    }
+    function logout() { isLoggedIn=false; localStorage.removeItem('adminLoggedIn'); document.getElementById('adminLoginBtn').style.display='flex'; document.getElementById('adminSidebar').classList.remove('open'); alert("تم تسجيل الخروج"); }
+    function showResetModal() { document.getElementById('resetModal').style.display='flex'; }
+    function closeResetModal() { document.getElementById('resetModal').style.display='none'; }
+    function closeLoginModal() { document.getElementById('loginModal').style.display='none'; }
+    function verifySecurity() { if(document.getElementById('securityAnswer').value === securityAnswer) { closeResetModal(); document.getElementById('changePwdModal').style.display='flex'; } else alert("إجابة خاطئة"); }
+    function changePassword() { let np=document.getElementById('newPassword').value, cp=document.getElementById('confirmPassword').value; if(np && np===cp) { adminPassword=np; alert("تم تغيير كلمة المرور"); closeChangePwdModal(); } else alert("غير متطابقة"); }
+    function showChangePassword() { document.getElementById('changePwdModal').style.display='flex'; }
+    function closeChangePwdModal() { document.getElementById('changePwdModal').style.display='none'; }
+    function toggleAdminSidebar() { document.getElementById('adminSidebar').classList.toggle('open'); }
+    
+    // Auto login check
+    if(localStorage.getItem('adminLoggedIn') === 'true') { isLoggedIn=true; document.getElementById('adminLoginBtn').style.display='none'; }
+    document.getElementById('adminLoginBtn').onclick = () => document.getElementById('loginModal').style.display='flex';
+    
+    // Back to top
+    let backBtn = document.querySelector('.back-to-top');
+    window.addEventListener('scroll', () => { backBtn.style.display = window.scrollY > 300 ? 'flex' : 'none'; });
+    backBtn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    function updateDateTime() { document.getElementById('current-date-time').innerHTML = new Date().toLocaleDateString('ar-SA', { weekday:'long', year:'numeric', month:'long', day:'numeric' }); document.getElementById('current-year').innerHTML = new Date().getFullYear(); }
+    updateDateTime(); setInterval(updateDateTime, 1000);
+    loadData();
+</script>
+</body>
+</html>
